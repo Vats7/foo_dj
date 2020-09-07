@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ckeditor',
     'mptt',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -172,3 +173,15 @@ CKEDITOR_CONFIGS = {
 }
 
 ###################################
+
+AWS_STORAGE_BUCKET_NAME = 'vatsfoodb'
+AWS_S3_REGION_NAME = 'ap-south-1'  # e.g. us-east-2
+AWS_ACCESS_KEY_ID = 'AKIA2DBPRHJ7X35G5JJ5'
+AWS_SECRET_ACCESS_KEY = 'ylKt/hyg51oGp+KMpFwUDXr7h7vXMYfICtHQ03xP'
+
+# Tell django-storages the domain to use to refer to static files.
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+# Tell the staticfiles app to use S3Boto3 storage when writing the collected static files (when
+# you run `collectstatic`).
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
