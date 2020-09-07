@@ -25,18 +25,27 @@ SECRET_KEY = '__6h5ux3+-($a@^s@^98uvx)1onv=daovnf#c9g$v$r)m!6@bn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['foo-store-dev.ap-south-1.elasticbeanstalk.com']
+ALLOWED_HOSTS = [
+    'foo-store-dev.ap-south-1.elasticbeanstalk.com',
+    '127.0.0.1'
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'user.apps.UserConfig',
+    'order.apps.OrderConfig',
+    'home.apps.HomeConfig',
+    'product.apps.ProductConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
+    'mptt',
 ]
 
 MIDDLEWARE = [
@@ -73,12 +82,6 @@ WSGI_APPLICATION = 'foo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-#}
 if 'RDS_DB_NAME' in os.environ:
     DATABASES = {
         'default': {
@@ -94,7 +97,7 @@ else:
     DATABASES = {
             'default': {
                 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-                'NAME': 'foodb',
+                'NAME': 'foo_db',
                 'USER': 'vatsalyasharma',
                 'PASSWORD': 'footballerize',
                 'HOST': 'localhost',
@@ -142,10 +145,30 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-#MEDIA_URL = '/uploads/'
+MEDIA_URL = '/uploads/'
 
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 #STATICFILES_DIRS = [
         #os.path.join(BASE_DIR, 'static'),
 #]
+
+SITE_ID = 1
+
+
+####################################
+    ##  CKEDITOR CONFIGURATION ##
+####################################
+
+CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
+
+CKEDITOR_UPLOAD_PATH = 'images/'
+CKEDITOR_IMAGE_BACKEND = "pillow"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': None,
+    },
+}
+
+###################################
