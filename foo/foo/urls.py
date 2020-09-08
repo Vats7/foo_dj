@@ -28,4 +28,4 @@ urlpatterns = [
     path('logout/', UserView.logout_func, name='logout_func'),
     path('signup/', UserView.signup_form, name='signup_form'),
     
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
