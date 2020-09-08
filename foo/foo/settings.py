@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from foo import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -149,7 +148,7 @@ USE_TZ = True
 #STATIC_URL = '/static/'
 #MEDIA_URL = '/uploads/'
 
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 #STATICFILES_DIRS = [
         #os.path.join(BASE_DIR, 'static'),
@@ -173,36 +172,35 @@ CKEDITOR_CONFIGS = {
     },
 }
 
-###################################
-AWS_S3_OBJECT_PARAMETERS = {
-    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
-    'CacheControl': 'max-age=94608000',
-}
+###############################################################
+
 
 AWS_LOCATION = 'static'
 AWS_STORAGE_BUCKET_NAME = 'vatsfoodb'
 AWS_S3_REGION_NAME = 'ap-south-1'  # e.g. us-east-2
 AWS_ACCESS_KEY_ID = 'AKIA2DBPRHJ7X35G5JJ5'
 AWS_SECRET_ACCESS_KEY = 'ylKt/hyg51oGp+KMpFwUDXr7h7vXMYfICtHQ03xP'
+AWS_S3_OBJECT_PARAMETERS = {
+    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+    'CacheControl': 'max-age=94608000',
+}
+
 
 # Tell django-storages the domain to use to refer to static files.
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 # Tell the staticfiles app to use S3Boto3 storage when writing the collected static files (when
 # you run `collectstatic`).
-STATICFILES_LOCATION = 'static'
-STATICFILES_STORAGE = 'foo.custom_storages.StaticStorage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
-MEDIAFILES_LOCATION = 'uploads'
 DEFAULT_FILE_STORAGE = 'foo.custom_storages.MediaStorage'
-
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'staticfiles'),
 ]
 
-STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-
-ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+#ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
